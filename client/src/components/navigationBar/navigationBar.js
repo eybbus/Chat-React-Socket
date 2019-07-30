@@ -1,37 +1,32 @@
 import React from 'react';
 import style from './navigationBar.module.css';
-import NavButton from '../navButton/navButton';
-
 import PropTypes from 'prop-types';
 
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userListSelected: true
+      toggle: true
     };
   }
 
   handleClick(selected) {
-    this.setState({ userListSelected: selected });
+    this.setState({ toggle: selected });
+    this.props.changeView();
   }
 
   render() {
-    const { userListSelected } = this.state;
+    const { toggle } = this.state;
     return (
       <div className={style.container}>
         <div
-          className={`${style.nav_item} ${
-            !userListSelected ? '' : style.selected
-          }`}
+          className={`${style.nav_item} ${!toggle ? '' : style.selected}`}
           onClick={() => this.handleClick(true)}
         >
           <h1>Participants</h1>
         </div>
         <div
-          className={`${style.nav_item} ${
-            userListSelected ? '' : style.selected
-          }`}
+          className={`${style.nav_item} ${toggle ? '' : style.selected}`}
           onClick={() => this.handleClick(false)}
         >
           <h1>Chat</h1>
@@ -41,6 +36,8 @@ class NavigationBar extends React.Component {
   }
 }
 
-NavigationBar.propTypes = {};
+NavigationBar.propTypes = {
+  changeView: PropTypes.func.isRequired
+};
 
 export default NavigationBar;
