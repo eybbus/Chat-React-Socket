@@ -18,8 +18,9 @@ io.on('connection', socket => {
     user.id = shortid.generate();
     user.name = name;
     users.push(user);
-    socket.emit('newUser', users);
     console.log(users);
+    io.emit('newUser', users);
+    socket.emit('userCreated', user);
   });
 
   socket.on('disconnect', () => {

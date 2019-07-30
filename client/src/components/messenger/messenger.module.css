@@ -6,3 +6,22 @@
   display: flex;
   flex-direction: column;
 }
+
+.formContainer {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type='text'] {
+  border: none;
+  border-bottom: 2px solid red;
+  margin: 20px 0;
+}
+
+input[type='text']:focus {
+  border-bottom: 2px solid red;
+  border-radius: 4px;
+}
