@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../header/Header';
 import NavigationBar from '../navigationBar/navigationBar';
+import UserList from '../userList/userList';
 import style from './messenger.module.css';
 
 class Messenger extends Component {
@@ -18,11 +19,12 @@ class Messenger extends Component {
   }
 
   render() {
-    console.log(this.state);
+    const { showChat } = this.state;
     return (
       <div className={style.container}>
         <Header title="Status Meeting Standup" />
         <NavigationBar changeView={() => this.setView()} />
+        {showChat ? '' : <UserList />}
       </div>
     );
   }
