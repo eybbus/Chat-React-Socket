@@ -26,8 +26,8 @@ export const sendNameToServer = name => {
   socket.emit('userName', name);
 };
 
-export const sendMessage = msg => {
-  socket.emit('message', msg);
+export const sendMessage = (msg, name) => {
+  socket.emit('message', { msg, name });
 };
 
 export default configureSocket;

@@ -14,6 +14,7 @@ const initialState = {
     {
       _id: '',
       clientID: '',
+      clientName: '',
       timeSent: '',
       content: ''
     }

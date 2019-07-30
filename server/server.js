@@ -7,6 +7,8 @@ const port = 3001;
 
 const users = [];
 
+const botName = 'Meetingbot';
+
 io.on('connection', socket => {
   console.log('A user has connected');
   let user = {
@@ -21,14 +23,29 @@ io.on('connection', socket => {
     console.log(users);
     io.emit('userUpdate', users);
     socket.emit('userCreated', user);
+    io.emit('joined');
+
+    let time = _getTime();
+    let message = {
+      _id: shortid.generate(),
+      clientID: 'server',
+      clientName: botName,
+      timeSent: time,
+      content: `${user.name} joined.`
+    };
+    io.emit('message', message);
   });
 
-  socket.on('message', msg => {
+  socket.on('message', data => {
+    console.log(user);
+
+    let time = _getTime();
     let message = {
       _id: shortid.generate(),
       clientID: socket.id,
-      timeSent: Date.now(),
-      content: msg
+      clientName: data.name,
+      timeSent: time,
+      content: data.msg
     };
     io.emit('message', message);
   });
@@ -38,8 +55,23 @@ io.on('connection', socket => {
     var index = users.findIndex(item => (item.id = user.id));
     users.splice(index, 1);
     io.emit('userUpdate', users);
+
+    let time = _getTime();
+    let message = {
+      _id: shortid.generate(),
+      clientID: 'server',
+      clientName: botName,
+      timeSent: time,
+      content: `${user.name} left.`
+    };
+    io.emit('message', message);
   });
 });
+
+const _getTime = () => {
+  let today = new Date();
+  return today.getHours() + ':' + today.getMinutes();
+};
 
 server.listen(port, () => {
   console.log(`Listening on port: ${port}`);
