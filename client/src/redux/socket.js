@@ -7,12 +7,12 @@ const configureSocket = dispatch => {
     console.log('connected');
   });
 
-  socket.on('newUser', users => {
-    dispatch({ type: 'USER_CREATED', users: users });
+  socket.on('userUpdate', users => {
+    dispatch({ type: 'USERS_UPDATE', users: users });
   });
 
   socket.on('userCreated', client => {
-    dispatch({ type: 'NEW_USER', client: client });
+    dispatch({ type: 'CLIENT_CREATED', client: client });
   });
 
   return socket;

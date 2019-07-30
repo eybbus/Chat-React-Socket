@@ -17,10 +17,10 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
-    case 'USER_CREATED':
+    case 'USERS_UPDATE':
       newState = { ...state, users: action.users };
       return newState;
-    case 'NEW_USER':
+    case 'CLIENT_CREATED':
       newState = {
         ...state,
         client: action.client,
