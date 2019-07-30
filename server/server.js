@@ -1,7 +1,6 @@
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const shortid = require('shortid');
 
 const port = 3001;
 
@@ -15,7 +14,7 @@ io.on('connection', socket => {
   };
 
   socket.on('userName', name => {
-    user.id = shortid.generate();
+    user.id = socket.id;
     user.name = name;
     users.push(user);
     console.log(users);
