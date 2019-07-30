@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Header from './components/header/Header';
+import Messenger from './components/messenger/messenger';
 
 function App() {
   return (
     <div className="App">
-      <Header title="Status Meeting Standup" />
+      <Messenger />
     </div>
   );
 }

@@ -1,0 +1,51 @@
+element {
+  --border-color: #e0e0e0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  background-color: #eeeeee;
+  height: 45px;
+  width: 100%;
+}
+
+.nav_item {
+  color: #808080;
+  font-family: arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav_item h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 100%;
+}
+
+.nav_item:not(.selected) {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.selected {
+  background: white;
+  border-top: 1px solid #e0e0e0;
+}
+
+.selected:nth-child(odd) {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 5px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.selected:nth-child(even) {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 0px;
+  border-left: 1px solid #e0e0e0;
+}
