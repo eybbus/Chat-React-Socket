@@ -1,17 +1,31 @@
-const express = require('express');
-const http = require('http');
-const socket = require('socket.io');
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const shortid = require('shortid');
 
-const app = express();
-const server = http.createServer(app);
-const io = socket(server);
+const port = 3001;
 
-const port = 3000;
+const users = [];
 
 io.on('connection', socket => {
   console.log('A user has connected');
+  let user = {
+    id: '',
+    name: ''
+  };
+
+  socket.on('userName', name => {
+    user.id = shortid.generate();
+    user.name = name;
+    users.push(user);
+    socket.emit('newUser', users);
+    console.log(users);
+  });
+
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log(`user: ${user.name} disconnected`);
+    var index = users.findIndex(item => (item.id = user.id));
+    users.splice(index, 1);
   });
 });
 
