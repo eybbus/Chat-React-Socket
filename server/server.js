@@ -1,6 +1,7 @@
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const shortid = require('shortid');
 
 const port = 3001;
 
@@ -20,6 +21,16 @@ io.on('connection', socket => {
     console.log(users);
     io.emit('userUpdate', users);
     socket.emit('userCreated', user);
+  });
+
+  socket.on('message', msg => {
+    let message = {
+      _id: shortid.generate(),
+      clientID: socket.id,
+      timeSent: Date.now(),
+      content: msg
+    };
+    io.emit('message', message);
   });
 
   socket.on('disconnect', () => {

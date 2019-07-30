@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../header/Header';
 import NavigationBar from '../navigationBar/navigationBar';
 import UserList from '../userList/userList';
+import Chat from '../chat/chat';
 import style from './messenger.module.css';
 import { connect } from 'react-redux';
 
@@ -57,7 +58,7 @@ class Messenger extends Component {
         <div className={style.container}>
           <Header title="Status Meeting Standup" />
           <NavigationBar changeView={() => this.setView()} />
-          {showChat ? '' : <UserList />}
+          {showChat ? <Chat /> : <UserList />}
         </div>
       );
     }

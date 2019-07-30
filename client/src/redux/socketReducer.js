@@ -1,5 +1,3 @@
-import { socket } from '../index';
-
 const initialState = {
   nameAssigned: false,
   client: {
@@ -10,6 +8,14 @@ const initialState = {
     {
       id: '',
       name: ''
+    }
+  ],
+  messages: [
+    {
+      _id: '',
+      clientID: '',
+      timeSent: '',
+      content: ''
     }
   ]
 };
@@ -27,9 +33,9 @@ const reducer = (state = initialState, action) => {
         nameAssigned: true
       };
       return newState;
-    case 'SEND_MESSAGE':
-      socket.emit();
-      break;
+    case 'MESSAGE_RECEIVED':
+      newState = { ...state, messages: [...state.messages, action.message] };
+      return newState;
     default:
       return state;
   }
