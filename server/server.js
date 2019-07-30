@@ -18,7 +18,7 @@ io.on('connection', socket => {
     user.name = name;
     users.push(user);
     console.log(users);
-    io.emit('newUser', users);
+    io.emit('userUpdate', users);
     socket.emit('userCreated', user);
   });
 
@@ -26,6 +26,7 @@ io.on('connection', socket => {
     console.log(`user: ${user.name} disconnected`);
     var index = users.findIndex(item => (item.id = user.id));
     users.splice(index, 1);
+    io.emit('userUpdate', users);
   });
 });
 
