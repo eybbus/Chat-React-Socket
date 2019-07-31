@@ -19,8 +19,12 @@ class InputBox extends Component {
 
   handleSubmit(event) {
     const { onSubmit } = this.props;
-    onSubmit(this.state.inputValue);
+    const { inputValue } = this.state;
     event.preventDefault();
+
+    if (inputValue === '') return;
+
+    onSubmit(inputValue);
     this.setState({ inputValue: '' });
   }
 
