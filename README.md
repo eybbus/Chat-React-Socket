@@ -1,40 +1,43 @@
-# Chat-Pexip
-Project for interview at [Pexip](https://www.pexip.com/)
+# :metal: Chat-React-Socket :metal:
+created with socket.io, create-react-app, react-redux. Without implementing middle ware
 
-# Assignment
+### How to run
+project is split into two folders. client and server.
 
-## Chat
+Open two terminals.
 
-- Task: implement a chat client and server
-- Position: front-end developer at Pexip
+terminal 1
+```bash
+cd Chat-React-Socket/server
+npm install
+npm run start
+```
 
-### Constraints
-
-- You have to work on the task yourself, independently
-- We expect you to spend around 4 hours.
-- If you get excited and want to spend more time that is perfectly fine, just make sure to tell us roughly how much time you've spent on this
-- Use any programming language to implement the server
-- Avoid using a library to handle socket events for the front end
-- Use either TypeScript or JavaScript
-- If you're going to use a front end framework we would prefer it to be React, but use whatever framework you are most comfortable with. Vanilla Javascript is also accepted.
-- You must use a git repository and commit frequently
-- No rush, please come back to us whenever you have had time to look into this
-- KISS: Keep It Simple
-
-### Evaluation
-
-- The primary goal of this exercise is to see how you work and structure your code as well as determine your technical skills.
-- We want to go through the code with you in a following interview to discuss your technique and choices.
+terminal 2
+```bash
+cd Chat-React-Socket/client
+npm install
+npm run start
+```
+this will be running at localhost:3000 and there you go :+1:
 
 ### Main tasks
 
-- [ ] Implement a chat service, that supports at least 2 different devices at the same time
-- [ ] You should be able to edit your own messages. Other particpants should see that the message was edited
-- [ ] You should be able to delete your own messages. Other particpants should see that the message was deleted
-- [ ] List of active participants to show who is in the session right now
-- [ ] Style the chat to look like the provided design
+- [x] Implement a chat service, that supports at least 2 different devices at the same time
+- [x] You should be able to edit your own messages. Other particpants should see that the message was edited
+- [x] You should be able to delete your own messages. Other particpants should see that the message was deleted
+- [x] List of active participants to show who is in the session right now
+- [x] Style the chat to look like the provided design
 
-### Bonus tasks (if you have time to spare)
+This took about 8 hours with some testing ideas and working out the kinks of sockets and redux.
+
+## Thoughts
+
+I want to get into implementing my own middleware, I have only used thunk when using middleware. But I desided to skip the middleware because I thought of KISS, I wanted to try and hit the time of 4 hours of implementing this and I have never implemented my own middleware. 
+
+The basic tasks took about 8 hours, haven't implemented sockets myself before. Sockets are neat stuff. Just need to workout how best to implement socket.io with redux.
+
+### Bonus tasks
 
 If you want to spend more time on this you could implement any of these features
 
