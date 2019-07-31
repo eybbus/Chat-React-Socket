@@ -21,14 +21,15 @@ class Chat extends React.Component {
   }
 
   render() {
-    const messagelist = this.props.messages.map(el => (
+    const { client, messages } = this.props;
+    const messagelist = messages.map(el => (
       <MessageCard
         key={el._id}
         id={el._id}
         server={el.clientID === 'server' ? true : false}
         name={el.clientName}
         date={el.timeSent}
-        owner={this.props.client.id === el.clientID ? true : false}
+        owner={client.id === el.clientID ? true : false}
         message={el.content}
         onApply={data => this.handleOnApply(data)}
         onRemove={data => this.handleOnRemove(data)}
