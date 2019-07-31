@@ -31,6 +31,7 @@ class InputBox extends Component {
       <form onSubmit={e => this.handleSubmit(e)} className={style.container}>
         <label>
           <input
+            autoFocus={true}
             className={style.input}
             type="text"
             value={inputValue}
