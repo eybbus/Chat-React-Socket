@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import style from './messageCard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
-class MessageCard extends Component {
+import { editMessage, deleteMessage } from '../../redux/socket';
+
+class MessageCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showOptions: false
+      showOptions: false,
+      editingMessage: false
     };
   }
 
@@ -18,16 +21,23 @@ class MessageCard extends Component {
     }));
   }
 
+  handleEditClick() {}
+
+  handleDeleteClick() {
+    const { id } = this.props;
+    deleteMessage(id);
+  }
+
   renderOptions() {
     if (this.state.showOptions) {
       return (
         <div className={style.menu}>
-          <button>Remove</button>
-          <button>Edit</button>
+          <button onClick={() => this.handleDeleteClick()}>Remove</button>
+          <button onClick={() => this.handleEditClick()}>Edit</button>
           <FontAwesomeIcon
             icon={faEllipsisH}
             onClick={() => this.toggleList()}
-            className={style.button}
+            className={style.show}
           />
         </div>
       );
@@ -36,28 +46,40 @@ class MessageCard extends Component {
         <FontAwesomeIcon
           icon={faEllipsisH}
           onClick={() => this.toggleList()}
-          className={style.button}
+          className={style.show}
         />
       );
     }
   }
 
+  renderText() {
+    const { server, message } = this.props;
+    if (server) {
+      return <p className={style.bot}>{message}</p>;
+    } else if (message.length === 0) {
+      return <p className={style.bot}>Message Deleted.</p>;
+    }
+
+    return <p>{message}</p>;
+  }
+
   render() {
-    const { server, name, date, owner, message } = this.props;
+    const { message, name, date, owner } = this.props;
     return (
       <div className={style.container}>
         <div className={style.info}>
           <h1>{name}</h1>
           <h2>{date}</h2>
-          {owner ? this.renderOptions() : ''}
+          {owner && message.length !== 0 ? this.renderOptions() : ''}
         </div>
-        <p className={server ? style.bot : ''}>{message}</p>
+        {this.renderText()}
       </div>
     );
   }
 }
 
 MessageCard.propTypes = {
+  id: PropTypes.string,
   server: PropTypes.bool,
   name: PropTypes.string,
   date: PropTypes.string,

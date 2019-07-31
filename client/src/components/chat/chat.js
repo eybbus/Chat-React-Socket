@@ -9,11 +9,12 @@ class Chat extends React.Component {
   render() {
     const messagelist = this.props.messages.map(el => (
       <MessageCard
-        server={el.clientID == 'server' ? true : false}
         key={el._id}
+        id={el._id}
+        server={el.clientID === 'server' ? true : false}
         name={el.clientName}
         date={el.timeSent}
-        owner={this.props.client.id == el.clientID ? true : false}
+        owner={this.props.client.id === el.clientID ? true : false}
         message={el.content}
       />
     ));

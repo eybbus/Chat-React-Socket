@@ -50,6 +50,11 @@ io.on('connection', socket => {
     io.emit('message', message);
   });
 
+  socket.on('deleteMessage', id => {
+    console.log('deleting');
+    io.emit('deleteMessage', id);
+  });
+
   socket.on('disconnect', () => {
     console.log(`user: ${user.name} disconnected`);
     var index = users.findIndex(item => (item.id = user.id));
