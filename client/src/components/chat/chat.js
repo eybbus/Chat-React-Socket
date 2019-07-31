@@ -1,51 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import { sendMessage } from '../../redux/socket';
+import MessageCard from '../messageCard/messageCard';
+import InputBox from '../inputBox/inputBox';
 
 import style from './chat.module.css';
 
-class chat extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      inputValue: ''
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({
-      inputValue: event.target.value
-    });
-  }
-
-  handleSubmit(event) {
-    sendMessage(this.state.inputValue);
-    event.preventDefault();
-    this.setState({ inputValue: '' });
-  }
-
+class Chat extends React.Component {
   render() {
-    const messagelist = this.props.messages.map(el => <p>{el.content}</p>);
-    const { inputValue } = this.state;
+    const messagelist = this.props.messages.map(el => (
+      <MessageCard
+        server={el.clientID == 'server' ? true : false}
+        key={el._id}
+        name={el.clientName}
+        date={el.timeSent}
+        owner={this.props.client.id == el.clientID ? true : false}
+        message={el.content}
+      />
+    ));
+
     return (
       <div className={style.container}>
         <div className={style.messages}>{messagelist}</div>
-        <div>
-          <form onSubmit={this.handleSubmit} className={style.formContainer}>
-            <label>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={this.handleChange}
-              />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
+        <div className={style.footer}>
+          <InputBox
+            clientName={this.props.client.name}
+            defaultValue="Message"
+          />
         </div>
       </div>
     );
@@ -53,7 +33,8 @@ class chat extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  messages: state.messages
+  messages: state.messages,
+  client: state.client
 });
 
-export default connect(mapStateToProps)(chat);
+export default connect(mapStateToProps)(Chat);
