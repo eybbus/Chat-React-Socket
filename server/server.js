@@ -20,10 +20,8 @@ io.on('connection', socket => {
     user.id = socket.id;
     user.name = name;
     users.push(user);
-    console.log(users);
     io.emit('userUpdate', users);
     socket.emit('userCreated', user);
-    io.emit('joined');
 
     let time = _getTime();
     let message = {
