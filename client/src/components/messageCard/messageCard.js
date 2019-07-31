@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import style from './messageCard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import Linkify from 'react-linkify';
 
 class MessageCard extends React.Component {
   constructor(props) {
@@ -98,6 +99,7 @@ class MessageCard extends React.Component {
   renderText() {
     const { server, message } = this.props;
     const { editingMessage, newMessage } = this.state;
+
     if (server) {
       return <p className={style.bot}>{message}</p>;
     } else if (message.length === 0) {
@@ -134,7 +136,7 @@ class MessageCard extends React.Component {
             <h2>{date}</h2>
             {this.renderOptions(owner, message)}
           </div>
-          {this.renderText()}
+          <Linkify>{this.renderText()}</Linkify>
         </div>
       );
     }
