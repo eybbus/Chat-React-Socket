@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { sendMessage } from '../../redux/socket';
 import style from './inputBox.module.css';
 
 import PropTypes from 'prop-types';
@@ -10,9 +9,6 @@ class InputBox extends Component {
     this.state = {
       inputValue: ''
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -22,7 +18,8 @@ class InputBox extends Component {
   }
 
   handleSubmit(event) {
-    sendMessage(this.state.inputValue, this.props.clientName);
+    const { onSubmit } = this.props;
+    onSubmit(this.state.inputValue);
     event.preventDefault();
     this.setState({ inputValue: '' });
   }
@@ -31,13 +28,13 @@ class InputBox extends Component {
     const { defaultValue } = this.props;
     const { inputValue } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className={style.container}>
+      <form onSubmit={e => this.handleSubmit(e)} className={style.container}>
         <label>
           <input
             className={style.input}
             type="text"
             value={inputValue}
-            onChange={this.handleChange}
+            onChange={e => this.handleChange(e)}
             placeholder={defaultValue}
           />
         </label>
@@ -47,8 +44,8 @@ class InputBox extends Component {
 }
 
 InputBox.propTypes = {
-  clientName: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string
+  defaultValue: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
 };
 
 export default InputBox;

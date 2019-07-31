@@ -2,10 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MessageCard from '../messageCard/messageCard';
 import InputBox from '../inputBox/inputBox';
+import { sendMessage } from '../../redux/socket';
 
 import style from './chat.module.css';
 
 class Chat extends React.Component {
+  handleOnSubmit(text) {
+    const { client } = this.props;
+    sendMessage(text, client.name);
+  }
+
   render() {
     const messagelist = this.props.messages.map(el => (
       <MessageCard
@@ -24,8 +30,8 @@ class Chat extends React.Component {
         <div className={style.messages}>{messagelist}</div>
         <div className={style.footer}>
           <InputBox
-            clientName={this.props.client.name}
             defaultValue="Message"
+            onSubmit={data => this.handleOnSubmit(data)}
           />
         </div>
       </div>
