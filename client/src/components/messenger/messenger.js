@@ -17,10 +17,8 @@ class Messenger extends Component {
     };
   }
 
-  setView() {
-    this.setState(prevState => ({
-      showChat: !prevState.showChat
-    }));
+  setView(show) {
+    this.setState({ showChat: show });
   }
 
   handleOnSubmit(text) {
@@ -29,7 +27,7 @@ class Messenger extends Component {
 
   render() {
     const { showChat } = this.state;
-    const { nameAssigned } = this.props;
+    const { nameAssigned, users } = this.props;
     if (!nameAssigned) {
       return (
         <div className={style.container}>
@@ -43,7 +41,10 @@ class Messenger extends Component {
       return (
         <div className={style.container}>
           <Header title="Status Meeting Standup" />
-          <NavigationBar changeView={() => this.setView()} />
+          <NavigationBar
+            count={users.length}
+            changeView={data => this.setView(data)}
+          />
           {showChat ? <Chat /> : <UserList />}
         </div>
       );
@@ -52,7 +53,8 @@ class Messenger extends Component {
 }
 
 const mapStateToProps = state => ({
-  nameAssigned: state.nameAssigned
+  nameAssigned: state.nameAssigned,
+  users: state.users
 });
 
 Messenger.propTypes = {};
