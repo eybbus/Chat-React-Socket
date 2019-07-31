@@ -1,3 +1,5 @@
-.app {
+.App {
   border: 1px solid gray;
+  height: 700px;
+  width: 350px;
 }
