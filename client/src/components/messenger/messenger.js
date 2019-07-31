@@ -3,6 +3,7 @@ import Header from '../header/Header';
 import NavigationBar from '../navigationBar/navigationBar';
 import UserList from '../userList/userList';
 import Chat from '../chat/chat';
+import InputBox from '../inputBox/inputBox';
 import style from './messenger.module.css';
 import { connect } from 'react-redux';
 
@@ -12,12 +13,8 @@ class Messenger extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showChat: false,
-      userName: ''
+      showChat: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   setView() {
@@ -26,31 +23,20 @@ class Messenger extends Component {
     }));
   }
 
-  handleChange(event) {
-    this.setState({ userName: event.target.value });
-  }
-
-  handleSubmit(event) {
-    sendNameToServer(this.state.userName);
-    event.preventDefault();
+  handleOnSubmit(text) {
+    sendNameToServer(text);
   }
 
   render() {
-    const { showChat, inputValue } = this.state;
+    const { showChat } = this.state;
     const { nameAssigned } = this.props;
     if (!nameAssigned) {
       return (
         <div className={style.container}>
-          <form onSubmit={this.handleSubmit} className={style.formContainer}>
-            <label>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={this.handleChange}
-              />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
+          <InputBox
+            onSubmit={data => this.handleOnSubmit(data)}
+            defaultValue="Enter Your Username"
+          />
         </div>
       );
     } else {
