@@ -1,5 +1,25 @@
-# Chat-React-Socket
+# :metal: Chat-React-Socket :metal:
 created with socket.io, create-react-app, react-redux. Without implementing middle ware
+
+### How to run
+project is split into two folders. client and server.
+
+Open two terminals.
+
+terminal 1
+```bash
+cd Chat-React-Socket/server
+npm install
+npm run start
+```
+
+terminal 2
+```bash
+cd Chat-React-Socket/client
+npm install
+npm run start
+```
+this will be running at localhost:3000 and there you go :+1:
 
 ### Main tasks
 
