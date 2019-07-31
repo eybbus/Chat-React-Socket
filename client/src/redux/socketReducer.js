@@ -27,6 +27,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   let newState;
   let newMessages;
+  let editedMessage;
   switch (action.type) {
     case 'USERS_UPDATE':
       newState = { ...state, users: action.users };
@@ -42,7 +43,12 @@ const reducer = (state = initialState, action) => {
       newState = { ...state, messages: [...state.messages, action.message] };
       return newState;
     case 'DELETE_MESSAGE':
-      newMessages = updateObjectInArray(state.messages, action);
+      newMessages = updateObjectInArray(state.messages, action, '');
+      newState = { ...state, messages: newMessages };
+      return newState;
+    case 'UPDATE_MESSAGE':
+      editedMessage = action.message + ' (Edit)';
+      newMessages = updateObjectInArray(state.messages, action, editedMessage);
       newState = { ...state, messages: newMessages };
       return newState;
     default:
@@ -50,7 +56,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-function updateObjectInArray(array, action) {
+function updateObjectInArray(array, action, value) {
   return array.map((item, index) => {
     if (item._id !== action.messageID) {
       // This isn't the item we care about - keep it as-is
@@ -60,7 +66,7 @@ function updateObjectInArray(array, action) {
     // Otherwise, this is the one we want - return an updated value
     return {
       ...item,
-      content: ''
+      content: value
     };
   });
 }

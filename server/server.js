@@ -37,8 +37,7 @@ io.on('connection', socket => {
   });
 
   socket.on('message', data => {
-    console.log(user);
-
+    console.log('Sending Message');
     let time = _getTime();
     let message = {
       _id: shortid.generate(),
@@ -53,6 +52,11 @@ io.on('connection', socket => {
   socket.on('deleteMessage', id => {
     console.log('deleting');
     io.emit('deleteMessage', id);
+  });
+
+  socket.on('editMessage', msg => {
+    console.log('Editing');
+    io.emit('updateMessage', msg);
   });
 
   socket.on('disconnect', () => {

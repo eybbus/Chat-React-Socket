@@ -23,6 +23,14 @@ const configureSocket = dispatch => {
     dispatch({ type: 'DELETE_MESSAGE', messageID: id });
   });
 
+  socket.on('updateMessage', data => {
+    dispatch({
+      type: 'UPDATE_MESSAGE',
+      messageID: data.id,
+      message: data.message
+    });
+  });
+
   return socket;
 };
 
@@ -38,8 +46,8 @@ export const deleteMessage = id => {
   socket.emit('deleteMessage', id);
 };
 
-export const editMessage = (msg, name) => {
-  socket.emit('editMessage', { msg, name });
+export const editMessage = (message, id) => {
+  socket.emit('editMessage', { message, id });
 };
 
 export default configureSocket;
