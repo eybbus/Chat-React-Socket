@@ -4,39 +4,82 @@ import style from './messageCard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
-import { editMessage, deleteMessage } from '../../redux/socket';
-
 class MessageCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showOptions: false,
-      editingMessage: false
+      editingMessage: false,
+      newMessage: this.props.message
     };
   }
 
-  toggleList() {
+  toggleOptions() {
     this.setState(prevState => ({
       showOptions: !prevState.showOptions
     }));
   }
 
-  handleEditClick() {}
-
-  handleDeleteClick() {
-    const { id } = this.props;
-    deleteMessage(id);
+  toggleEdit() {
+    this.setState(prevState => ({
+      editingMessage: !prevState.editingMessage
+    }));
   }
 
-  renderOptions() {
+  handleChange(event) {
+    this.setState({
+      newMessage: event.target.value
+    });
+  }
+
+  handleEditClick() {
+    this.toggleEdit();
+  }
+
+  handleApplyClick() {
+    const { onApply, id, message } = this.props;
+    const { newMessage } = this.state;
+    if (newMessage !== message) {
+      onApply({ newMessage, id });
+    }
+    this.handleEditClick();
+    this.toggleOptions();
+  }
+
+  handleDeleteClick() {
+    const { onRemove, id } = this.props;
+    onRemove(id);
+  }
+
+  renderOptions(owner, message) {
+    // should be refactored
+    if (!owner || message.length === 0) return;
+    const { editingMessage } = this.state;
     if (this.state.showOptions) {
+      let firstButton;
+      let seccondButton;
+      if (editingMessage) {
+        firstButton = (
+          <button onClick={() => this.handleApplyClick()}>Apply</button>
+        );
+        seccondButton = (
+          <button onClick={() => this.handleEditClick()}>Cancel</button>
+        );
+      } else {
+        firstButton = (
+          <button onClick={() => this.handleEditClick()}>Edit</button>
+        );
+        seccondButton = (
+          <button onClick={() => this.handleDeleteClick()}>Remove</button>
+        );
+      }
       return (
         <div className={style.menu}>
-          <button onClick={() => this.handleDeleteClick()}>Remove</button>
-          <button onClick={() => this.handleEditClick()}>Edit</button>
+          {firstButton}
+          {seccondButton}
           <FontAwesomeIcon
             icon={faEllipsisH}
-            onClick={() => this.toggleList()}
+            onClick={() => this.toggleOptions()}
             className={style.show}
           />
         </div>
@@ -45,7 +88,7 @@ class MessageCard extends React.Component {
       return (
         <FontAwesomeIcon
           icon={faEllipsisH}
-          onClick={() => this.toggleList()}
+          onClick={() => this.toggleOptions()}
           className={style.show}
         />
       );
@@ -54,27 +97,47 @@ class MessageCard extends React.Component {
 
   renderText() {
     const { server, message } = this.props;
+    const { editingMessage, newMessage } = this.state;
     if (server) {
       return <p className={style.bot}>{message}</p>;
     } else if (message.length === 0) {
       return <p className={style.bot}>Message Deleted.</p>;
     }
-
-    return <p>{message}</p>;
+    if (editingMessage) {
+      return (
+        <textarea onChange={e => this.handleChange(e)} value={newMessage} />
+      );
+    } else {
+      return <p>{message}</p>;
+    }
   }
 
   render() {
+    const { editingMessage } = this.state;
     const { message, name, date, owner } = this.props;
-    return (
-      <div className={style.container}>
-        <div className={style.info}>
-          <h1>{name}</h1>
-          <h2>{date}</h2>
-          {owner && message.length !== 0 ? this.renderOptions() : ''}
+    if (editingMessage) {
+      return (
+        <div className={style.container}>
+          <div className={style.info}>
+            <h1>{name}</h1>
+            <h2>{date}</h2>
+            {this.renderOptions(owner, message)}
+          </div>
+          {this.renderText()}
         </div>
-        {this.renderText()}
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={style.container}>
+          <div className={style.info}>
+            <h1>{name}</h1>
+            <h2>{date}</h2>
+            {this.renderOptions(owner, message)}
+          </div>
+          {this.renderText()}
+        </div>
+      );
+    }
   }
 }
 
@@ -84,7 +147,9 @@ MessageCard.propTypes = {
   name: PropTypes.string,
   date: PropTypes.string,
   owner: PropTypes.bool,
-  message: PropTypes.string
+  message: PropTypes.string,
+  onApply: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
 };
 
 export default MessageCard;

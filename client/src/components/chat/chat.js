@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MessageCard from '../messageCard/messageCard';
 import InputBox from '../inputBox/inputBox';
-import { sendMessage } from '../../redux/socket';
+import { sendMessage, editMessage, deleteMessage } from '../../redux/socket';
 
 import style from './chat.module.css';
 
@@ -10,6 +10,14 @@ class Chat extends React.Component {
   handleOnSubmit(text) {
     const { client } = this.props;
     sendMessage(text, client.name);
+  }
+
+  handleOnApply(msg) {
+    editMessage(msg.newMessage, msg.id);
+  }
+
+  handleOnRemove(id) {
+    deleteMessage(id);
   }
 
   render() {
@@ -22,6 +30,8 @@ class Chat extends React.Component {
         date={el.timeSent}
         owner={this.props.client.id === el.clientID ? true : false}
         message={el.content}
+        onApply={data => this.handleOnApply(data)}
+        onRemove={data => this.handleOnRemove(data)}
       />
     ));
 
